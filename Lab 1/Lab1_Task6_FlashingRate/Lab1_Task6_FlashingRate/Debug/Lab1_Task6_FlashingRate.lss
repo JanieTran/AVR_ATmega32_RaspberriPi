@@ -1,0 +1,343 @@
+
+Lab1_Task6_FlashingRate.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001d6  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000004  00800060  000001d6  0000026a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000002  00800064  00800064  0000026e  2**0
+                  ALLOC
+  3 .debug_aranges 00000038  00000000  00000000  0000026e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 00000066  00000000  00000000  000002a6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000001b0  00000000  00000000  0000030c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000013d  00000000  00000000  000004bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000001eb  00000000  00000000  000005f9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000050  00000000  00000000  000007e4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000012e  00000000  00000000  00000834  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000048  00000000  00000000  00000962  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000030  00000000  00000000  000009aa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   8:	0c 94 49 00 	jmp	0x92	; 0x92 <__vector_2>
+   c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  10:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  14:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  18:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  1c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  28:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  40:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  44:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  48:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  4c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  50:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e6 ed       	ldi	r30, 0xD6	; 214
+  68:	f1 e0       	ldi	r31, 0x01	; 1
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
+
+0000006c <.do_copy_data_loop>:
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+
+00000070 <.do_copy_data_start>:
+  70:	a4 36       	cpi	r26, 0x64	; 100
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
+
+00000076 <__do_clear_bss>:
+  76:	10 e0       	ldi	r17, 0x00	; 0
+  78:	a4 e6       	ldi	r26, 0x64	; 100
+  7a:	b0 e0       	ldi	r27, 0x00	; 0
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	a6 36       	cpi	r26, 0x66	; 102
+  82:	b1 07       	cpc	r27, r17
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0e 94 8e 00 	call	0x11c	; 0x11c <main>
+  8a:	0c 94 e9 00 	jmp	0x1d2	; 0x1d2 <_exit>
+
+0000008e <__bad_interrupt>:
+  8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000092 <__vector_2>:
+	    // Toggle flashing rate of LED
+	    OCR0 = calculate_ocr(duty_cycles[ledMode]);
+    }
+}
+
+ISR (INT1_vect) {
+  92:	1f 92       	push	r1
+  94:	0f 92       	push	r0
+  96:	0f b6       	in	r0, 0x3f	; 63
+  98:	0f 92       	push	r0
+  9a:	11 24       	eor	r1, r1
+  9c:	2f 93       	push	r18
+  9e:	3f 93       	push	r19
+  a0:	4f 93       	push	r20
+  a2:	5f 93       	push	r21
+  a4:	8f 93       	push	r24
+  a6:	9f 93       	push	r25
+  a8:	20 ed       	ldi	r18, 0xD0	; 208
+  aa:	37 e0       	ldi	r19, 0x07	; 7
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+  ac:	40 e9       	ldi	r20, 0x90	; 144
+  ae:	51 e0       	ldi	r21, 0x01	; 1
+  b0:	ca 01       	movw	r24, r20
+  b2:	01 97       	sbiw	r24, 0x01	; 1
+  b4:	f1 f7       	brne	.-4      	; 0xb2 <__vector_2+0x20>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+  b6:	21 50       	subi	r18, 0x01	; 1
+  b8:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+  ba:	d1 f7       	brne	.-12     	; 0xb0 <__vector_2+0x1e>
+	_delay_ms(200);
+	ledMode ^= 1;
+  bc:	80 91 64 00 	lds	r24, 0x0064
+  c0:	90 91 65 00 	lds	r25, 0x0065
+  c4:	21 e0       	ldi	r18, 0x01	; 1
+  c6:	30 e0       	ldi	r19, 0x00	; 0
+  c8:	82 27       	eor	r24, r18
+  ca:	93 27       	eor	r25, r19
+  cc:	90 93 65 00 	sts	0x0065, r25
+  d0:	80 93 64 00 	sts	0x0064, r24
+}
+  d4:	9f 91       	pop	r25
+  d6:	8f 91       	pop	r24
+  d8:	5f 91       	pop	r21
+  da:	4f 91       	pop	r20
+  dc:	3f 91       	pop	r19
+  de:	2f 91       	pop	r18
+  e0:	0f 90       	pop	r0
+  e2:	0f be       	out	0x3f, r0	; 63
+  e4:	0f 90       	pop	r0
+  e6:	1f 90       	pop	r1
+  e8:	18 95       	reti
+
+000000ea <calculate_ocr>:
+
+int calculate_ocr(int duty_cycle) {
+  ea:	38 2f       	mov	r19, r24
+  ec:	22 27       	eor	r18, r18
+  ee:	a9 01       	movw	r20, r18
+  f0:	48 1b       	sub	r20, r24
+  f2:	59 0b       	sbc	r21, r25
+  f4:	ca 01       	movw	r24, r20
+  f6:	64 e6       	ldi	r22, 0x64	; 100
+  f8:	70 e0       	ldi	r23, 0x00	; 0
+  fa:	0e 94 c2 00 	call	0x184	; 0x184 <__divmodhi4>
+  fe:	86 2f       	mov	r24, r22
+ 100:	97 2f       	mov	r25, r23
+	return duty_cycle * 255 / 100;
+}
+ 102:	08 95       	ret
+
+00000104 <initTimer>:
+
+void initTimer() {
+	// Fast PWM mode
+	TCCR0 |= (1 << WGM00) | (1 << WGM01);
+ 104:	e3 e5       	ldi	r30, 0x53	; 83
+ 106:	f0 e0       	ldi	r31, 0x00	; 0
+ 108:	80 81       	ld	r24, Z
+ 10a:	88 64       	ori	r24, 0x48	; 72
+ 10c:	80 83       	st	Z, r24
+	// Clear OC0 on Compare Match, set OC0 at BOTTOM
+	TCCR0 |= 1 << COM01;
+ 10e:	80 81       	ld	r24, Z
+ 110:	80 62       	ori	r24, 0x20	; 32
+ 112:	80 83       	st	Z, r24
+	// Clk source = clk/1024 => 15625Hz = 64us/cycle
+	// Counting from 0-255 => 64us * 255 = 16320us = 16.32ms
+	TCCR0 |= (1 << CS00) | (1 << CS02);
+ 114:	80 81       	ld	r24, Z
+ 116:	85 60       	ori	r24, 0x05	; 5
+ 118:	80 83       	st	Z, r24
+ 11a:	08 95       	ret
+
+0000011c <main>:
+
+int duty_cycles[] = {20, 50};
+volatile int ledMode;
+
+int main(void)
+{
+ 11c:	0f 93       	push	r16
+ 11e:	1f 93       	push	r17
+ 120:	cf 93       	push	r28
+ 122:	df 93       	push	r29
+    // PB3 as output for LED
+    DDRB |= 1 << DDB3;
+ 124:	e7 e3       	ldi	r30, 0x37	; 55
+ 126:	f0 e0       	ldi	r31, 0x00	; 0
+ 128:	80 81       	ld	r24, Z
+ 12a:	88 60       	ori	r24, 0x08	; 8
+ 12c:	80 83       	st	Z, r24
+    // PD3 as input from push button
+    DDRD &= ~(1 << DDD3);
+ 12e:	e1 e3       	ldi	r30, 0x31	; 49
+ 130:	f0 e0       	ldi	r31, 0x00	; 0
+ 132:	80 81       	ld	r24, Z
+ 134:	87 7f       	andi	r24, 0xF7	; 247
+ 136:	80 83       	st	Z, r24
+    
+    initTimer();
+ 138:	0e 94 82 00 	call	0x104	; 0x104 <initTimer>
+    
+    // INTERRUPT INIT
+    //============================================================
+    // Set INT1 as external interrupt
+    GICR |= 1 << INT1;
+ 13c:	eb e5       	ldi	r30, 0x5B	; 91
+ 13e:	f0 e0       	ldi	r31, 0x00	; 0
+ 140:	80 81       	ld	r24, Z
+ 142:	80 68       	ori	r24, 0x80	; 128
+ 144:	80 83       	st	Z, r24
+    // Interrupt request on rising edge of INT1
+    MCUCR |= (1 << ISC11) | (1 << ISC10);
+ 146:	e5 e5       	ldi	r30, 0x55	; 85
+ 148:	f0 e0       	ldi	r31, 0x00	; 0
+ 14a:	80 81       	ld	r24, Z
+ 14c:	8c 60       	ori	r24, 0x0C	; 12
+ 14e:	80 83       	st	Z, r24
+    // Enable global interrupt
+    sei();
+ 150:	78 94       	sei
+    
+    ledMode = 1;
+ 152:	81 e0       	ldi	r24, 0x01	; 1
+ 154:	90 e0       	ldi	r25, 0x00	; 0
+ 156:	90 93 65 00 	sts	0x0065, r25
+ 15a:	80 93 64 00 	sts	0x0064, r24
+    
+    while (1)
+    {
+	    // Toggle flashing rate of LED
+	    OCR0 = calculate_ocr(duty_cycles[ledMode]);
+ 15e:	00 e6       	ldi	r16, 0x60	; 96
+ 160:	10 e0       	ldi	r17, 0x00	; 0
+ 162:	cc e5       	ldi	r28, 0x5C	; 92
+ 164:	d0 e0       	ldi	r29, 0x00	; 0
+ 166:	80 91 64 00 	lds	r24, 0x0064
+ 16a:	90 91 65 00 	lds	r25, 0x0065
+ 16e:	88 0f       	add	r24, r24
+ 170:	99 1f       	adc	r25, r25
+ 172:	f8 01       	movw	r30, r16
+ 174:	e8 0f       	add	r30, r24
+ 176:	f9 1f       	adc	r31, r25
+ 178:	80 81       	ld	r24, Z
+ 17a:	91 81       	ldd	r25, Z+1	; 0x01
+ 17c:	0e 94 75 00 	call	0xea	; 0xea <calculate_ocr>
+ 180:	88 83       	st	Y, r24
+ 182:	f1 cf       	rjmp	.-30     	; 0x166 <main+0x4a>
+
+00000184 <__divmodhi4>:
+ 184:	97 fb       	bst	r25, 7
+ 186:	09 2e       	mov	r0, r25
+ 188:	07 26       	eor	r0, r23
+ 18a:	0a d0       	rcall	.+20     	; 0x1a0 <__divmodhi4_neg1>
+ 18c:	77 fd       	sbrc	r23, 7
+ 18e:	04 d0       	rcall	.+8      	; 0x198 <__divmodhi4_neg2>
+ 190:	0c d0       	rcall	.+24     	; 0x1aa <__udivmodhi4>
+ 192:	06 d0       	rcall	.+12     	; 0x1a0 <__divmodhi4_neg1>
+ 194:	00 20       	and	r0, r0
+ 196:	1a f4       	brpl	.+6      	; 0x19e <__divmodhi4_exit>
+
+00000198 <__divmodhi4_neg2>:
+ 198:	70 95       	com	r23
+ 19a:	61 95       	neg	r22
+ 19c:	7f 4f       	sbci	r23, 0xFF	; 255
+
+0000019e <__divmodhi4_exit>:
+ 19e:	08 95       	ret
+
+000001a0 <__divmodhi4_neg1>:
+ 1a0:	f6 f7       	brtc	.-4      	; 0x19e <__divmodhi4_exit>
+ 1a2:	90 95       	com	r25
+ 1a4:	81 95       	neg	r24
+ 1a6:	9f 4f       	sbci	r25, 0xFF	; 255
+ 1a8:	08 95       	ret
+
+000001aa <__udivmodhi4>:
+ 1aa:	aa 1b       	sub	r26, r26
+ 1ac:	bb 1b       	sub	r27, r27
+ 1ae:	51 e1       	ldi	r21, 0x11	; 17
+ 1b0:	07 c0       	rjmp	.+14     	; 0x1c0 <__udivmodhi4_ep>
+
+000001b2 <__udivmodhi4_loop>:
+ 1b2:	aa 1f       	adc	r26, r26
+ 1b4:	bb 1f       	adc	r27, r27
+ 1b6:	a6 17       	cp	r26, r22
+ 1b8:	b7 07       	cpc	r27, r23
+ 1ba:	10 f0       	brcs	.+4      	; 0x1c0 <__udivmodhi4_ep>
+ 1bc:	a6 1b       	sub	r26, r22
+ 1be:	b7 0b       	sbc	r27, r23
+
+000001c0 <__udivmodhi4_ep>:
+ 1c0:	88 1f       	adc	r24, r24
+ 1c2:	99 1f       	adc	r25, r25
+ 1c4:	5a 95       	dec	r21
+ 1c6:	a9 f7       	brne	.-22     	; 0x1b2 <__udivmodhi4_loop>
+ 1c8:	80 95       	com	r24
+ 1ca:	90 95       	com	r25
+ 1cc:	bc 01       	movw	r22, r24
+ 1ce:	cd 01       	movw	r24, r26
+ 1d0:	08 95       	ret
+
+000001d2 <_exit>:
+ 1d2:	f8 94       	cli
+
+000001d4 <__stop_program>:
+ 1d4:	ff cf       	rjmp	.-2      	; 0x1d4 <__stop_program>

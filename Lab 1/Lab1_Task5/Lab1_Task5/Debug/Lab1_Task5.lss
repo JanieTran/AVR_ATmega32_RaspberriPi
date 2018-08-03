@@ -97,10 +97,10 @@ int main(void)
 		while (!(TIFR & 1 << TOV0));
   88:	e8 e5       	ldi	r30, 0x58	; 88
   8a:	f0 e0       	ldi	r31, 0x00	; 0
-			seconds++;
 		}
 		
-		if (seconds == 1) {
+		// Toggle LED after 5 second
+		if (seconds == 5) {
 			seconds = 0;
 			PORTA ^= 1 << PORTA0;
   8c:	ab e3       	ldi	r26, 0x3B	; 59
@@ -121,10 +121,12 @@ int main(void)
   9c:	80 81       	ld	r24, Z
   9e:	81 60       	ori	r24, 0x01	; 1
   a0:	80 83       	st	Z, r24
+		// Update counter after each counting cycles
 		counter++;
   a2:	2f 5f       	subi	r18, 0xFF	; 255
   a4:	3f 4f       	sbci	r19, 0xFF	; 255
 		
+		// After 61 counting cycles, increment seconds
 		if (counter == 61) {
   a6:	2d 33       	cpi	r18, 0x3D	; 61
   a8:	31 05       	cpc	r19, r1
@@ -136,8 +138,9 @@ int main(void)
   b0:	9b 01       	movw	r18, r22
 		}
 		
-		if (seconds == 1) {
-  b2:	41 30       	cpi	r20, 0x01	; 1
+		// Toggle LED after 5 second
+		if (seconds == 5) {
+  b2:	45 30       	cpi	r20, 0x05	; 5
   b4:	51 05       	cpc	r21, r1
   b6:	79 f7       	brne	.-34     	; 0x96 <main+0x2a>
 			seconds = 0;

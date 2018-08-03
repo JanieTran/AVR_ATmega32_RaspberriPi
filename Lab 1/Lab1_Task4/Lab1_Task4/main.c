@@ -10,7 +10,7 @@
 
 int main(void)
 {
-    // PB3 as output
+    // PB3 as output for LED
 	DDRB |= 1 << DDB3;
 	
 	// TIMER0 INIT
@@ -27,11 +27,11 @@ int main(void)
 	
     while (1) 
     {
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 200; j++) {
-				OCR0 = calculate_ocr(duty_cycles[i]);
-			}
-		}
+		//for (int i = 0; i < 7; i++) {
+			//for (int j = 0; j < 200; j++) {
+				OCR0 = calculate_ocr(duty_cycles[2]);
+			//}
+		//}
     }
 }
 

@@ -18,8 +18,8 @@ int main(void)
 	TCCR0 |= (1 << WGM00) | (1 << WGM01);
 	// Clear OC0 on Compare Match, set OC0 at BOTTOM
 	TCCR0 |= 1 << COM01;
-	// Clk source = clk/1024 => 15625Hz = 64us/cycle
-	// Counting from 0-255 => 64us * 255 = 16320us = 16.32ms
+	// Clk source = clk/1024 => 12MHz/1024 = 11718Hz = 85us/cycle
+	// Counting from 0-255 => 85us * 255 = 21675us = 21.675ms = 46Hz
 	TCCR0 |= (1 << CS00) | (1 << CS02);
 	
 	// Output compare values required

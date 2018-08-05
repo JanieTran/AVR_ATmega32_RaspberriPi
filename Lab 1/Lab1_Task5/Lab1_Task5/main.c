@@ -15,11 +15,11 @@ int main(void)
 	
 	// TIMER0 INIT
 	// Mode: normal <= 0x00 << WGM00, WGM01 (default)
-	// Clk source = clk/1024 => 15625Hz = 64us/cycle
-	// Counting from 0-255 => 64us * 255 = 16320us = 16.32ms
+	// Clk source = clk/1024 => 12MHz/1024 = 11718Hz = 85us/cycle
+	// Counting from 0-255 => 85us * 255 = 21675us = 21.675ms = 46Hz
 	TCCR0 |= (1 << CS00) | (1 << CS02);
 	
-	// 1 second = 1000ms => 1000/16.32 = 61.27 counting cycles
+	// 1 second = 1000ms => 1000/21.675 = 46 counting cycles
 	int counter = 0;
 	int seconds = 0;
 	
@@ -31,7 +31,7 @@ int main(void)
 		counter++;
 		
 		// After 61 counting cycles, increment seconds
-		if (counter == 61) {
+		if (counter == 46) {
 			counter = 0;
 			seconds++;
 		}

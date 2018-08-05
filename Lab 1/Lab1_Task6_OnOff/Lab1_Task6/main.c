@@ -6,7 +6,7 @@
  */ 
 
 #ifndef F_CPU
-#define F_CPU 16000000ul
+#define F_CPU 12000000ul
 #endif
 
 #include <avr/io.h>
@@ -47,8 +47,4 @@ int main(void)
 ISR (INT1_vect) {
 	_delay_ms(300);
 	ledMode ^= 1;
-}
-
-int calculate_ocr(int duty_cycle) {
-	return duty_cycle * 255 / 100;
 }

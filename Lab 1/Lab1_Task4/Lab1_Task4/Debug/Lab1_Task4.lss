@@ -63,8 +63,8 @@ Disassembly of section .text:
   68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 0000006c <calculate_ocr>:
-			//}
-		//}
+    {
+		OCR0 = calculate_ocr(duty_cycles[0]);
     }
 }
 
@@ -81,10 +81,11 @@ int calculate_ocr(int duty_cycle) {
   80:	86 2f       	mov	r24, r22
   82:	97 2f       	mov	r25, r23
 	return duty_cycle * 255 / 100;
+}
   84:	08 95       	ret
 
 00000086 <main>:
-
+#include <avr/io.h>
 
 int main(void)
 {
@@ -109,19 +110,19 @@ int main(void)
   9a:	80 81       	ld	r24, Z
   9c:	80 62       	ori	r24, 0x20	; 32
   9e:	80 83       	st	Z, r24
-	// Clk source = clk/1024 => 15625Hz = 64us/cycle
-	// Counting from 0-255 => 64us * 255 = 16320us = 16.32ms
+	// Clk source = clk/1024 => 12MHz/1024 = 11718Hz = 85us/cycle
+	// Counting from 0-255 => 85us * 255 = 21675us = 21.675ms = 46Hz
 	TCCR0 |= (1 << CS00) | (1 << CS02);
   a0:	80 81       	ld	r24, Z
   a2:	85 60       	ori	r24, 0x05	; 5
   a4:	80 83       	st	Z, r24
+	// Output compare values required
+	int duty_cycles[] = {10, 20, 30, 40, 50, 75, 100};
 	
     while (1) 
     {
-		//for (int i = 0; i < 7; i++) {
-			//for (int j = 0; j < 200; j++) {
-				OCR0 = calculate_ocr(duty_cycles[2]);
-  a6:	8e e1       	ldi	r24, 0x1E	; 30
+		OCR0 = calculate_ocr(duty_cycles[0]);
+  a6:	8a e0       	ldi	r24, 0x0A	; 10
   a8:	90 e0       	ldi	r25, 0x00	; 0
   aa:	0e 94 36 00 	call	0x6c	; 0x6c <calculate_ocr>
   ae:	ec e5       	ldi	r30, 0x5C	; 92

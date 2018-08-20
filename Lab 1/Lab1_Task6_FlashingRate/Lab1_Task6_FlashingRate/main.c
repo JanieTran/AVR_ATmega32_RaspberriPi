@@ -23,8 +23,6 @@ int main(void)
     // PD3 as input from push button
     DDRD &= ~(1 << DDD3);
     
-    initTimer();
-    
     // INTERRUPT INIT
     //============================================================
     // Set INT1 as external interrupt
@@ -33,6 +31,8 @@ int main(void)
     MCUCR |= (1 << ISC11) | (1 << ISC10);
     // Enable global interrupt
     sei();
+	
+	initTimer();
     
     ledMode = 1;
     

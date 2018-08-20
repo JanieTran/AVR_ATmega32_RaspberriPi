@@ -87,7 +87,7 @@ void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
-  7e:	40 e9       	ldi	r20, 0x90	; 144
+  7e:	4c e2       	ldi	r20, 0x2C	; 44
   80:	51 e0       	ldi	r21, 0x01	; 1
   82:	80 81       	ld	r24, Z
   84:	83 60       	ori	r24, 0x03	; 3

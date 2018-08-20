@@ -1,13 +1,9 @@
 Archive member included because of file (symbol)
 
-c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
-                              main.o (__divmodhi4)
 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
                               c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o (exit)
 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
                               main.o (__do_clear_bss)
-c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
-                              c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o) (__udivmodhi4)
 
 Allocating common symbols
 Common symbol       size              file
@@ -21,12 +17,6 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
- .text.calculate_ocr
-                0x00000000        0x0 main.o
- .text          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
- .data          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
- .bss           0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
- .text.libgcc   0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
  .text          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
@@ -35,10 +25,6 @@ Discarded input sections
  .data          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  .bss           0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc   0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
- .data          0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
- .bss           0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
- .text.libgcc   0x00000000        0x0 c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
 
 Memory Configuration
 
@@ -338,47 +324,47 @@ LOAD c:/program files/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x30
+.debug_aranges  0x00000000       0x28
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x30 main.o
+                0x00000000       0x28 main.o
 
 .debug_pubnames
-                0x00000000       0x48
+                0x00000000       0x36
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000       0x48 main.o
+                0x00000000       0x36 main.o
 
-.debug_info     0x00000000      0x178
+.debug_info     0x00000000      0x14c
  *(.debug_info)
- .debug_info    0x00000000      0x178 main.o
+ .debug_info    0x00000000      0x14c main.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000      0x10f
+.debug_abbrev   0x00000000       0xe7
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x10f main.o
+ .debug_abbrev  0x00000000       0xe7 main.o
 
-.debug_line     0x00000000      0x1c9
+.debug_line     0x00000000      0x1a7
  *(.debug_line)
- .debug_line    0x00000000      0x1c9 main.o
+ .debug_line    0x00000000      0x1a7 main.o
 
-.debug_frame    0x00000000       0x40
+.debug_frame    0x00000000       0x30
  *(.debug_frame)
- .debug_frame   0x00000000       0x40 main.o
+ .debug_frame   0x00000000       0x30 main.o
 
-.debug_str      0x00000000      0x104
+.debug_str      0x00000000       0xeb
  *(.debug_str)
- .debug_str     0x00000000      0x104 main.o
-                                0x138 (size before relaxing)
+ .debug_str     0x00000000       0xeb main.o
+                                0x11f (size before relaxing)
 
-.debug_loc      0x00000000       0x48
+.debug_loc      0x00000000       0x30
  *(.debug_loc)
- .debug_loc     0x00000000       0x48 main.o
+ .debug_loc     0x00000000       0x30 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
 OUTPUT(Lab1_Task6.elf elf32-avr)
 LOAD linker stubs
 
-.debug_ranges   0x00000000       0x28
- .debug_ranges  0x00000000       0x28 main.o
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 main.o

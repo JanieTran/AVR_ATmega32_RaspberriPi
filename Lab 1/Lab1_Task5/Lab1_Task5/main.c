@@ -7,7 +7,6 @@
 
 #include <avr/io.h>
 
-
 int main(void)
 {
     // PA0 as output for LED

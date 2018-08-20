@@ -63,7 +63,7 @@ Disassembly of section .text:
   68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 0000006c <main>:
-
+#include <avr/io.h>
 
 int main(void)
 {
@@ -77,8 +77,8 @@ int main(void)
 	
 	// TIMER0 INIT
 	// Mode: normal <= 0x00 << WGM00, WGM01 (default)
-	// Clk source = clk/1024 => 15625Hz = 64us/cycle
-	// Counting from 0-255 => 64us * 255 = 16320us = 16.32ms
+	// Clk source = clk/1024 => 12MHz/1024 = 11718Hz = 85us/cycle
+	// Counting from 0-255 => 85us * 255 = 21675us = 21.675ms = 46Hz
 	TCCR0 |= (1 << CS00) | (1 << CS02);
   76:	e3 e5       	ldi	r30, 0x53	; 83
   78:	f0 e0       	ldi	r31, 0x00	; 0
@@ -127,8 +127,8 @@ int main(void)
   a4:	3f 4f       	sbci	r19, 0xFF	; 255
 		
 		// After 61 counting cycles, increment seconds
-		if (counter == 61) {
-  a6:	2d 33       	cpi	r18, 0x3D	; 61
+		if (counter == 46) {
+  a6:	2e 32       	cpi	r18, 0x2E	; 46
   a8:	31 05       	cpc	r19, r1
   aa:	19 f4       	brne	.+6      	; 0xb2 <main+0x46>
 			counter = 0;

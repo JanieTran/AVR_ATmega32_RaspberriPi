@@ -27,7 +27,6 @@ int main(void)
 				set_duty_cycle(cycle[i]);
 			}
 		}
-		
     }
 }
 

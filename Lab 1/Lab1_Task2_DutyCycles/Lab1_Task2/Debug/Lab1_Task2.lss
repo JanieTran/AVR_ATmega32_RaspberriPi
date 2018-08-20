@@ -82,8 +82,8 @@ Disassembly of section .text:
   7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 00000082 <set_duty_cycle>:
+			}
 		}
-		
     }
 }
 
@@ -142,8 +142,8 @@ _delay_ms(double __ms)
 	uint16_t __ticks;
 	double __tmp = ((F_CPU) / 4e3) * __ms;
   da:	20 e0       	ldi	r18, 0x00	; 0
-  dc:	30 e0       	ldi	r19, 0x00	; 0
-  de:	4a e7       	ldi	r20, 0x7A	; 122
+  dc:	30 e8       	ldi	r19, 0x80	; 128
+  de:	4b e3       	ldi	r20, 0x3B	; 59
   e0:	55 e4       	ldi	r21, 0x45	; 69
   e2:	0e 94 0f 02 	call	0x41e	; 0x41e <__mulsf3>
   e6:	7b 01       	movw	r14, r22
@@ -191,7 +191,7 @@ void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
- 12e:	20 e9       	ldi	r18, 0x90	; 144
+ 12e:	2c e2       	ldi	r18, 0x2C	; 44
  130:	31 e0       	ldi	r19, 0x01	; 1
  132:	f9 01       	movw	r30, r18
  134:	31 97       	sbiw	r30, 0x01	; 1
@@ -246,8 +246,8 @@ _delay_ms(double __ms)
 	uint16_t __ticks;
 	double __tmp = ((F_CPU) / 4e3) * __ms;
  16e:	20 e0       	ldi	r18, 0x00	; 0
- 170:	30 e0       	ldi	r19, 0x00	; 0
- 172:	4a e7       	ldi	r20, 0x7A	; 122
+ 170:	30 e8       	ldi	r19, 0x80	; 128
+ 172:	4b e3       	ldi	r20, 0x3B	; 59
  174:	55 e4       	ldi	r21, 0x45	; 69
  176:	0e 94 0f 02 	call	0x41e	; 0x41e <__mulsf3>
  17a:	7b 01       	movw	r14, r22
@@ -289,7 +289,7 @@ _delay_ms(double __ms)
 		while(__ticks)
  1be:	67 2b       	or	r22, r23
  1c0:	79 f0       	breq	.+30     	; 0x1e0 <set_duty_cycle+0x15e>
- 1c2:	20 e9       	ldi	r18, 0x90	; 144
+ 1c2:	2c e2       	ldi	r18, 0x2C	; 44
  1c4:	31 e0       	ldi	r19, 0x01	; 1
  1c6:	f9 01       	movw	r30, r18
  1c8:	31 97       	sbiw	r30, 0x01	; 1

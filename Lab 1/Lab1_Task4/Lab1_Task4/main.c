@@ -7,7 +7,6 @@
 
 #include <avr/io.h>
 
-
 int main(void)
 {
     // PB3 as output for LED
@@ -27,14 +26,11 @@ int main(void)
 	
     while (1) 
     {
-		//for (int i = 0; i < 7; i++) {
-			//for (int j = 0; j < 200; j++) {
-				OCR0 = calculate_ocr(duty_cycles[2]);
-			//}
-		//}
+		OCR0 = calculate_ocr(duty_cycles[0]);
     }
 }
 
 int calculate_ocr(int duty_cycle) {
 	return duty_cycle * 255 / 100;
 }
+

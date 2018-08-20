@@ -115,15 +115,15 @@ ISR (INT1_vect) {
   a2:	5f 93       	push	r21
   a4:	8f 93       	push	r24
   a6:	9f 93       	push	r25
-  a8:	20 ed       	ldi	r18, 0xD0	; 208
-  aa:	37 e0       	ldi	r19, 0x07	; 7
+  a8:	28 eb       	ldi	r18, 0xB8	; 184
+  aa:	3b e0       	ldi	r19, 0x0B	; 11
     milliseconds can be achieved.
  */
 void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
-  ac:	40 e9       	ldi	r20, 0x90	; 144
+  ac:	4c e2       	ldi	r20, 0x2C	; 44
   ae:	51 e0       	ldi	r21, 0x01	; 1
   b0:	ca 01       	movw	r24, r20
   b2:	01 97       	sbiw	r24, 0x01	; 1
@@ -143,7 +143,7 @@ _delay_loop_2(uint16_t __count)
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
   ba:	d1 f7       	brne	.-12     	; 0xb0 <__vector_2+0x1e>
-	_delay_ms(200);
+	_delay_ms(300);
 	ledMode ^= 1;
   bc:	80 91 64 00 	lds	r24, 0x0064
   c0:	90 91 65 00 	lds	r25, 0x0065
@@ -233,28 +233,28 @@ int main(void)
  134:	87 7f       	andi	r24, 0xF7	; 247
  136:	80 83       	st	Z, r24
     
-    initTimer();
- 138:	0e 94 82 00 	call	0x104	; 0x104 <initTimer>
-    
     // INTERRUPT INIT
     //============================================================
     // Set INT1 as external interrupt
     GICR |= 1 << INT1;
- 13c:	eb e5       	ldi	r30, 0x5B	; 91
- 13e:	f0 e0       	ldi	r31, 0x00	; 0
- 140:	80 81       	ld	r24, Z
- 142:	80 68       	ori	r24, 0x80	; 128
- 144:	80 83       	st	Z, r24
+ 138:	eb e5       	ldi	r30, 0x5B	; 91
+ 13a:	f0 e0       	ldi	r31, 0x00	; 0
+ 13c:	80 81       	ld	r24, Z
+ 13e:	80 68       	ori	r24, 0x80	; 128
+ 140:	80 83       	st	Z, r24
     // Interrupt request on rising edge of INT1
     MCUCR |= (1 << ISC11) | (1 << ISC10);
- 146:	e5 e5       	ldi	r30, 0x55	; 85
- 148:	f0 e0       	ldi	r31, 0x00	; 0
- 14a:	80 81       	ld	r24, Z
- 14c:	8c 60       	ori	r24, 0x0C	; 12
- 14e:	80 83       	st	Z, r24
+ 142:	e5 e5       	ldi	r30, 0x55	; 85
+ 144:	f0 e0       	ldi	r31, 0x00	; 0
+ 146:	80 81       	ld	r24, Z
+ 148:	8c 60       	ori	r24, 0x0C	; 12
+ 14a:	80 83       	st	Z, r24
     // Enable global interrupt
     sei();
- 150:	78 94       	sei
+ 14c:	78 94       	sei
+	
+	initTimer();
+ 14e:	0e 94 82 00 	call	0x104	; 0x104 <initTimer>
     
     ledMode = 1;
  152:	81 e0       	ldi	r24, 0x01	; 1

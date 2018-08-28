@@ -1,0 +1,728 @@
+
+A1_CountDownClock.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000035c  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000004  00800060  00800060  000003d0  2**0
+                  ALLOC
+  2 .debug_aranges 000000c0  00000000  00000000  000003d0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_pubnames 0000014d  00000000  00000000  00000490  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000047f  00000000  00000000  000005dd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 0000028a  00000000  00000000  00000a5c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000696  00000000  00000000  00000ce6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000120  00000000  00000000  0000137c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    000001f3  00000000  00000000  0000149c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000206  00000000  00000000  0000168f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 000000f0  00000000  00000000  00001895  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+	
+	// Wait until TWINT is successfully cleared
+	while (!(TWCR & (1 << TWINT)));
+}
+
+uint8_t TWI_AckRead(void) {
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a4 36       	cpi	r26, 0x64	; 100
+  6c:	b1 07       	cpc	r27, r17
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 bc 00 	call	0x178	; 0x178 <main>
+  74:	0c 94 ac 01 	jmp	0x358	; 0x358 <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <GPIO_Config>:
+// GPIO Config
+//=====================================================
+
+void GPIO_Config(void) {
+	// Port A (excluding PA6) as output for 7-segment digit 1
+	DDRA = 0b10111111;
+  7c:	8f eb       	ldi	r24, 0xBF	; 191
+  7e:	8a bb       	out	0x1a, r24	; 26
+	// Port B (excluding PB7) as output for 7-segment digit 2
+	DDRB = 0b01111111;
+  80:	8f e7       	ldi	r24, 0x7F	; 127
+  82:	87 bb       	out	0x17, r24	; 23
+	// PD3 as input from push button
+	DDRD &= ~(1 << DDD3);
+  84:	e1 e3       	ldi	r30, 0x31	; 49
+  86:	f0 e0       	ldi	r31, 0x00	; 0
+  88:	80 81       	ld	r24, Z
+  8a:	87 7f       	andi	r24, 0xF7	; 247
+  8c:	80 83       	st	Z, r24
+	// PC3 as output to LED
+	DDRC |= 1 << DDC3;
+  8e:	e4 e3       	ldi	r30, 0x34	; 52
+  90:	f0 e0       	ldi	r31, 0x00	; 0
+  92:	80 81       	ld	r24, Z
+  94:	88 60       	ori	r24, 0x08	; 8
+  96:	80 83       	st	Z, r24
+}
+  98:	08 95       	ret
+
+0000009a <ClearDisplay>:
+//=====================================================
+// 7-Segment display
+//=====================================================
+
+void ClearDisplay(void) {
+	PORTA = 0xFFul;
+  9a:	8f ef       	ldi	r24, 0xFF	; 255
+  9c:	8b bb       	out	0x1b, r24	; 27
+	PORTB = 0x7Ful;
+  9e:	8f e7       	ldi	r24, 0x7F	; 127
+  a0:	88 bb       	out	0x18, r24	; 24
+}
+  a2:	08 95       	ret
+
+000000a4 <WriteDigit1>:
+
+void WriteDigit1(uint8_t second) {
+	uint8_t tenth = second / 10;
+	uint8_t digit;
+	
+	switch (tenth) {
+  a4:	6a e0       	ldi	r22, 0x0A	; 10
+  a6:	0e 94 a0 01 	call	0x340	; 0x340 <__udivmodqi4>
+  aa:	84 30       	cpi	r24, 0x04	; 4
+  ac:	19 f1       	breq	.+70     	; 0xf4 <WriteDigit1+0x50>
+  ae:	85 30       	cpi	r24, 0x05	; 5
+  b0:	48 f4       	brcc	.+18     	; 0xc4 <WriteDigit1+0x20>
+  b2:	81 30       	cpi	r24, 0x01	; 1
+  b4:	c9 f0       	breq	.+50     	; 0xe8 <WriteDigit1+0x44>
+  b6:	81 30       	cpi	r24, 0x01	; 1
+  b8:	98 f0       	brcs	.+38     	; 0xe0 <WriteDigit1+0x3c>
+  ba:	82 30       	cpi	r24, 0x02	; 2
+  bc:	b9 f0       	breq	.+46     	; 0xec <WriteDigit1+0x48>
+  be:	83 30       	cpi	r24, 0x03	; 3
+  c0:	89 f4       	brne	.+34     	; 0xe4 <WriteDigit1+0x40>
+  c2:	16 c0       	rjmp	.+44     	; 0xf0 <WriteDigit1+0x4c>
+  c4:	87 30       	cpi	r24, 0x07	; 7
+  c6:	e1 f0       	breq	.+56     	; 0x100 <WriteDigit1+0x5c>
+  c8:	88 30       	cpi	r24, 0x08	; 8
+  ca:	28 f4       	brcc	.+10     	; 0xd6 <WriteDigit1+0x32>
+  cc:	85 30       	cpi	r24, 0x05	; 5
+  ce:	a1 f0       	breq	.+40     	; 0xf8 <WriteDigit1+0x54>
+  d0:	86 30       	cpi	r24, 0x06	; 6
+  d2:	41 f4       	brne	.+16     	; 0xe4 <WriteDigit1+0x40>
+  d4:	13 c0       	rjmp	.+38     	; 0xfc <WriteDigit1+0x58>
+  d6:	88 30       	cpi	r24, 0x08	; 8
+  d8:	a9 f0       	breq	.+42     	; 0x104 <WriteDigit1+0x60>
+  da:	89 30       	cpi	r24, 0x09	; 9
+  dc:	19 f4       	brne	.+6      	; 0xe4 <WriteDigit1+0x40>
+  de:	14 c0       	rjmp	.+40     	; 0x108 <WriteDigit1+0x64>
+  e0:	80 ec       	ldi	r24, 0xC0	; 192
+  e2:	13 c0       	rjmp	.+38     	; 0x10a <WriteDigit1+0x66>
+  e4:	8f ef       	ldi	r24, 0xFF	; 255
+  e6:	11 c0       	rjmp	.+34     	; 0x10a <WriteDigit1+0x66>
+  e8:	89 ef       	ldi	r24, 0xF9	; 249
+  ea:	0f c0       	rjmp	.+30     	; 0x10a <WriteDigit1+0x66>
+		default: digit = 0xFF;	  break;
+		case 0:  digit = B_ZERO;  break;
+		case 1:  digit = B_ONE;   break;
+  ec:	84 ea       	ldi	r24, 0xA4	; 164
+  ee:	0d c0       	rjmp	.+26     	; 0x10a <WriteDigit1+0x66>
+		case 2:  digit = B_TWO;   break;
+  f0:	80 eb       	ldi	r24, 0xB0	; 176
+  f2:	0b c0       	rjmp	.+22     	; 0x10a <WriteDigit1+0x66>
+		case 3:  digit = B_THREE; break;
+  f4:	89 e9       	ldi	r24, 0x99	; 153
+  f6:	09 c0       	rjmp	.+18     	; 0x10a <WriteDigit1+0x66>
+		case 4:  digit = B_FOUR;  break;
+  f8:	82 e9       	ldi	r24, 0x92	; 146
+  fa:	07 c0       	rjmp	.+14     	; 0x10a <WriteDigit1+0x66>
+		case 5:  digit = B_FIVE;  break;
+  fc:	82 e8       	ldi	r24, 0x82	; 130
+  fe:	05 c0       	rjmp	.+10     	; 0x10a <WriteDigit1+0x66>
+		case 6:  digit = B_SIX;   break;
+ 100:	88 ef       	ldi	r24, 0xF8	; 248
+ 102:	03 c0       	rjmp	.+6      	; 0x10a <WriteDigit1+0x66>
+		case 7:  digit = B_SEVEN; break;
+ 104:	80 e8       	ldi	r24, 0x80	; 128
+ 106:	01 c0       	rjmp	.+2      	; 0x10a <WriteDigit1+0x66>
+		case 8:  digit = B_EIGHT; break;
+ 108:	80 e9       	ldi	r24, 0x90	; 144
+		case 9:  digit = B_NINE;  break;
+	}
+	
+	PORTB = digit;
+ 10a:	88 bb       	out	0x18, r24	; 24
+}
+ 10c:	08 95       	ret
+
+0000010e <WriteDigit2>:
+
+void WriteDigit2(uint8_t second) {
+	uint8_t unit = second % 10;
+	uint8_t digit;
+	
+	switch (unit) {
+ 10e:	6a e0       	ldi	r22, 0x0A	; 10
+ 110:	0e 94 a0 01 	call	0x340	; 0x340 <__udivmodqi4>
+ 114:	94 30       	cpi	r25, 0x04	; 4
+ 116:	19 f1       	breq	.+70     	; 0x15e <WriteDigit2+0x50>
+ 118:	95 30       	cpi	r25, 0x05	; 5
+ 11a:	48 f4       	brcc	.+18     	; 0x12e <WriteDigit2+0x20>
+ 11c:	91 30       	cpi	r25, 0x01	; 1
+ 11e:	c9 f0       	breq	.+50     	; 0x152 <WriteDigit2+0x44>
+ 120:	91 30       	cpi	r25, 0x01	; 1
+ 122:	98 f0       	brcs	.+38     	; 0x14a <WriteDigit2+0x3c>
+ 124:	92 30       	cpi	r25, 0x02	; 2
+ 126:	b9 f0       	breq	.+46     	; 0x156 <WriteDigit2+0x48>
+ 128:	93 30       	cpi	r25, 0x03	; 3
+ 12a:	89 f4       	brne	.+34     	; 0x14e <WriteDigit2+0x40>
+ 12c:	16 c0       	rjmp	.+44     	; 0x15a <WriteDigit2+0x4c>
+ 12e:	97 30       	cpi	r25, 0x07	; 7
+ 130:	e1 f0       	breq	.+56     	; 0x16a <WriteDigit2+0x5c>
+ 132:	98 30       	cpi	r25, 0x08	; 8
+ 134:	28 f4       	brcc	.+10     	; 0x140 <WriteDigit2+0x32>
+ 136:	95 30       	cpi	r25, 0x05	; 5
+ 138:	a1 f0       	breq	.+40     	; 0x162 <WriteDigit2+0x54>
+ 13a:	96 30       	cpi	r25, 0x06	; 6
+ 13c:	41 f4       	brne	.+16     	; 0x14e <WriteDigit2+0x40>
+ 13e:	13 c0       	rjmp	.+38     	; 0x166 <WriteDigit2+0x58>
+ 140:	98 30       	cpi	r25, 0x08	; 8
+ 142:	a9 f0       	breq	.+42     	; 0x16e <WriteDigit2+0x60>
+ 144:	99 30       	cpi	r25, 0x09	; 9
+ 146:	19 f4       	brne	.+6      	; 0x14e <WriteDigit2+0x40>
+ 148:	14 c0       	rjmp	.+40     	; 0x172 <WriteDigit2+0x64>
+ 14a:	80 ec       	ldi	r24, 0xC0	; 192
+ 14c:	13 c0       	rjmp	.+38     	; 0x174 <WriteDigit2+0x66>
+ 14e:	8f ef       	ldi	r24, 0xFF	; 255
+ 150:	11 c0       	rjmp	.+34     	; 0x174 <WriteDigit2+0x66>
+ 152:	89 ef       	ldi	r24, 0xF9	; 249
+ 154:	0f c0       	rjmp	.+30     	; 0x174 <WriteDigit2+0x66>
+		default: digit = 0xFF;	  break;
+		case 0:  digit = A_ZERO;  break;
+		case 1:  digit = A_ONE;  break;
+ 156:	84 e6       	ldi	r24, 0x64	; 100
+ 158:	0d c0       	rjmp	.+26     	; 0x174 <WriteDigit2+0x66>
+		case 2:  digit = A_TWO;   break;
+ 15a:	80 e7       	ldi	r24, 0x70	; 112
+ 15c:	0b c0       	rjmp	.+22     	; 0x174 <WriteDigit2+0x66>
+		case 3:  digit = A_THREE; break;
+ 15e:	89 e5       	ldi	r24, 0x59	; 89
+ 160:	09 c0       	rjmp	.+18     	; 0x174 <WriteDigit2+0x66>
+		case 4:  digit = A_FOUR;  break;
+ 162:	82 e5       	ldi	r24, 0x52	; 82
+ 164:	07 c0       	rjmp	.+14     	; 0x174 <WriteDigit2+0x66>
+		case 5:  digit = A_FIVE;  break;
+ 166:	82 e4       	ldi	r24, 0x42	; 66
+ 168:	05 c0       	rjmp	.+10     	; 0x174 <WriteDigit2+0x66>
+		case 6:  digit = A_SIX;   break;
+ 16a:	88 ef       	ldi	r24, 0xF8	; 248
+ 16c:	03 c0       	rjmp	.+6      	; 0x174 <WriteDigit2+0x66>
+		case 7:  digit = A_SEVEN; break;
+ 16e:	80 e4       	ldi	r24, 0x40	; 64
+ 170:	01 c0       	rjmp	.+2      	; 0x174 <WriteDigit2+0x66>
+		case 8:  digit = A_EIGHT; break;
+ 172:	80 e5       	ldi	r24, 0x50	; 80
+		case 9:  digit = A_NINE;  break;
+	}
+	
+	PORTA = digit;
+ 174:	8b bb       	out	0x1b, r24	; 27
+}
+ 176:	08 95       	ret
+
+00000178 <main>:
+uint8_t rtcSecond;
+uint8_t counting;
+uint8_t finish;
+
+int main(void)
+{
+ 178:	6f 92       	push	r6
+ 17a:	7f 92       	push	r7
+ 17c:	8f 92       	push	r8
+ 17e:	9f 92       	push	r9
+ 180:	af 92       	push	r10
+ 182:	bf 92       	push	r11
+ 184:	cf 92       	push	r12
+ 186:	df 92       	push	r13
+ 188:	ef 92       	push	r14
+ 18a:	ff 92       	push	r15
+ 18c:	0f 93       	push	r16
+ 18e:	1f 93       	push	r17
+ 190:	cf 93       	push	r28
+ 192:	df 93       	push	r29
+	// Configuration
+	GPIO_Config();
+ 194:	0e 94 3e 00 	call	0x7c	; 0x7c <GPIO_Config>
+	ClearDisplay();
+ 198:	0e 94 4d 00 	call	0x9a	; 0x9a <ClearDisplay>
+	TWI_Init();
+ 19c:	0e 94 6f 01 	call	0x2de	; 0x2de <TWI_Init>
+	RTC_ResetSec();
+ 1a0:	0e 94 46 01 	call	0x28c	; 0x28c <RTC_ResetSec>
+	
+	// Variables initialisation
+	counting = 0;
+ 1a4:	10 92 63 00 	sts	0x0063, r1
+	second = 0;
+ 1a8:	10 92 61 00 	sts	0x0061, r1
+	rtcSecond = 0;
+ 1ac:	10 92 62 00 	sts	0x0062, r1
+	finish = 0;
+ 1b0:	10 92 60 00 	sts	0x0060, r1
+			}
+		}
+		
+		// If button is pushed, reset clock and
+		// begin counting down
+		if (PIND & 1 << PIND3) {
+ 1b4:	00 e3       	ldi	r16, 0x30	; 48
+ 1b6:	10 e0       	ldi	r17, 0x00	; 0
+ 1b8:	0f 2e       	mov	r0, r31
+ 1ba:	f8 eb       	ldi	r31, 0xB8	; 184
+ 1bc:	cf 2e       	mov	r12, r31
+ 1be:	fb e0       	ldi	r31, 0x0B	; 11
+ 1c0:	df 2e       	mov	r13, r31
+ 1c2:	f0 2d       	mov	r31, r0
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 1c4:	c8 ec       	ldi	r28, 0xC8	; 200
+ 1c6:	d0 e0       	ldi	r29, 0x00	; 0
+			_delay_ms(300);
+			
+			RTC_ResetSec();
+			counting = 1;
+ 1c8:	bb 24       	eor	r11, r11
+ 1ca:	b3 94       	inc	r11
+		WriteDigit1(second);
+		WriteDigit2(second);
+		
+		// Toggle LED on when finish
+		if (finish) {
+			PORTC |= 1 << PORTC3;
+ 1cc:	0f 2e       	mov	r0, r31
+ 1ce:	f5 e3       	ldi	r31, 0x35	; 53
+ 1d0:	ef 2e       	mov	r14, r31
+ 1d2:	ff 24       	eor	r15, r15
+ 1d4:	f0 2d       	mov	r31, r0
+ 1d6:	0f 2e       	mov	r0, r31
+ 1d8:	f0 e2       	ldi	r31, 0x20	; 32
+ 1da:	6f 2e       	mov	r6, r31
+ 1dc:	fe e4       	ldi	r31, 0x4E	; 78
+ 1de:	7f 2e       	mov	r7, r31
+ 1e0:	f0 2d       	mov	r31, r0
+	finish = 0;
+	
+    while (1) {
+		// Counting mode
+		if (counting) {
+			RTC_ReadSec(&rtcSecond);
+ 1e2:	0f 2e       	mov	r0, r31
+ 1e4:	f2 e6       	ldi	r31, 0x62	; 98
+ 1e6:	8f 2e       	mov	r8, r31
+ 1e8:	f0 e0       	ldi	r31, 0x00	; 0
+ 1ea:	9f 2e       	mov	r9, r31
+ 1ec:	f0 2d       	mov	r31, r0
+			second = 59 - rtcSecond;	
+ 1ee:	0f 2e       	mov	r0, r31
+ 1f0:	fb e3       	ldi	r31, 0x3B	; 59
+ 1f2:	af 2e       	mov	r10, r31
+ 1f4:	f0 2d       	mov	r31, r0
+ 1f6:	13 c0       	rjmp	.+38     	; 0x21e <main+0xa6>
+	rtcSecond = 0;
+	finish = 0;
+	
+    while (1) {
+		// Counting mode
+		if (counting) {
+ 1f8:	80 91 63 00 	lds	r24, 0x0063
+ 1fc:	88 23       	and	r24, r24
+ 1fe:	79 f0       	breq	.+30     	; 0x21e <main+0xa6>
+			RTC_ReadSec(&rtcSecond);
+ 200:	c4 01       	movw	r24, r8
+ 202:	0e 94 54 01 	call	0x2a8	; 0x2a8 <RTC_ReadSec>
+			second = 59 - rtcSecond;	
+ 206:	80 91 62 00 	lds	r24, 0x0062
+ 20a:	9a 2d       	mov	r25, r10
+ 20c:	98 1b       	sub	r25, r24
+ 20e:	90 93 61 00 	sts	0x0061, r25
+			
+			// When done counting,
+			// exit counting mode and toggle finish flag
+			if (second == 0) {
+ 212:	99 23       	and	r25, r25
+ 214:	21 f4       	brne	.+8      	; 0x21e <main+0xa6>
+				counting = 0;
+ 216:	10 92 63 00 	sts	0x0063, r1
+				finish = 1;
+ 21a:	b0 92 60 00 	sts	0x0060, r11
+			}
+		}
+		
+		// If button is pushed, reset clock and
+		// begin counting down
+		if (PIND & 1 << PIND3) {
+ 21e:	f8 01       	movw	r30, r16
+ 220:	80 81       	ld	r24, Z
+ 222:	83 ff       	sbrs	r24, 3
+ 224:	0b c0       	rjmp	.+22     	; 0x23c <main+0xc4>
+ 226:	96 01       	movw	r18, r12
+ 228:	ce 01       	movw	r24, r28
+ 22a:	01 97       	sbiw	r24, 0x01	; 1
+ 22c:	f1 f7       	brne	.-4      	; 0x22a <main+0xb2>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 22e:	21 50       	subi	r18, 0x01	; 1
+ 230:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 232:	d1 f7       	brne	.-12     	; 0x228 <main+0xb0>
+			_delay_ms(300);
+			
+			RTC_ResetSec();
+ 234:	0e 94 46 01 	call	0x28c	; 0x28c <RTC_ResetSec>
+			counting = 1;
+ 238:	b0 92 63 00 	sts	0x0063, r11
+		}
+		
+		// Display value of second
+		WriteDigit1(second);
+ 23c:	80 91 61 00 	lds	r24, 0x0061
+ 240:	0e 94 52 00 	call	0xa4	; 0xa4 <WriteDigit1>
+		WriteDigit2(second);
+ 244:	80 91 61 00 	lds	r24, 0x0061
+ 248:	0e 94 87 00 	call	0x10e	; 0x10e <WriteDigit2>
+		
+		// Toggle LED on when finish
+		if (finish) {
+ 24c:	80 91 60 00 	lds	r24, 0x0060
+ 250:	88 23       	and	r24, r24
+ 252:	91 f2       	breq	.-92     	; 0x1f8 <main+0x80>
+			PORTC |= 1 << PORTC3;
+ 254:	f7 01       	movw	r30, r14
+ 256:	80 81       	ld	r24, Z
+ 258:	88 60       	ori	r24, 0x08	; 8
+ 25a:	80 83       	st	Z, r24
+ 25c:	93 01       	movw	r18, r6
+ 25e:	ce 01       	movw	r24, r28
+ 260:	01 97       	sbiw	r24, 0x01	; 1
+ 262:	f1 f7       	brne	.-4      	; 0x260 <main+0xe8>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 264:	21 50       	subi	r18, 0x01	; 1
+ 266:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 268:	d1 f7       	brne	.-12     	; 0x25e <main+0xe6>
+			_delay_ms(2000);
+			PORTC &= ~(1 << PORTC3);
+ 26a:	f7 01       	movw	r30, r14
+ 26c:	80 81       	ld	r24, Z
+ 26e:	87 7f       	andi	r24, 0xF7	; 247
+ 270:	80 83       	st	Z, r24
+			
+			finish = 0;
+ 272:	10 92 60 00 	sts	0x0060, r1
+ 276:	c0 cf       	rjmp	.-128    	; 0x1f8 <main+0x80>
+
+00000278 <BCDtoDecimal>:
+	TWI_Write(0x00ul);
+	
+	TWI_Stop();
+}
+
+uint8_t BCDtoDecimal(uint8_t value) {
+ 278:	28 2f       	mov	r18, r24
+ 27a:	22 95       	swap	r18
+ 27c:	2f 70       	andi	r18, 0x0F	; 15
+ 27e:	9a e0       	ldi	r25, 0x0A	; 10
+ 280:	29 9f       	mul	r18, r25
+ 282:	90 01       	movw	r18, r0
+ 284:	11 24       	eor	r1, r1
+ 286:	8f 70       	andi	r24, 0x0F	; 15
+	uint8_t tenth = value >> 4;
+	uint8_t unit = value & 0x0Ful;
+	
+	return tenth * 10 + unit;
+ 288:	82 0f       	add	r24, r18
+ 28a:	08 95       	ret
+
+0000028c <RTC_ResetSec>:
+	
+	TWI_Stop();
+}
+
+void RTC_ResetSec(void) {
+	TWI_Start();
+ 28c:	0e 94 7c 01 	call	0x2f8	; 0x2f8 <TWI_Start>
+	
+	// Send Write request
+	TWI_Write(RTC_WRITE_MODE);
+ 290:	80 ed       	ldi	r24, 0xD0	; 208
+ 292:	0e 94 8e 01 	call	0x31c	; 0x31c <TWI_Write>
+	// Request address for Second
+	TWI_Write(RTC_SECOND_REG);
+ 296:	80 e0       	ldi	r24, 0x00	; 0
+ 298:	0e 94 8e 01 	call	0x31c	; 0x31c <TWI_Write>
+	
+	// Reset Second value to 0
+	TWI_Write(0x00ul);
+ 29c:	80 e0       	ldi	r24, 0x00	; 0
+ 29e:	0e 94 8e 01 	call	0x31c	; 0x31c <TWI_Write>
+	
+	TWI_Stop();
+ 2a2:	0e 94 85 01 	call	0x30a	; 0x30a <TWI_Stop>
+}
+ 2a6:	08 95       	ret
+
+000002a8 <RTC_ReadSec>:
+
+#include <avr/io.h>
+#include "RTC.h"
+#include "TWI.h"
+
+void RTC_ReadSec(uint8_t *rtcSecond) {
+ 2a8:	0f 93       	push	r16
+ 2aa:	1f 93       	push	r17
+ 2ac:	8c 01       	movw	r16, r24
+	TWI_Start();
+ 2ae:	0e 94 7c 01 	call	0x2f8	; 0x2f8 <TWI_Start>
+	
+	// Send Write request
+	TWI_Write(RTC_WRITE_MODE);
+ 2b2:	80 ed       	ldi	r24, 0xD0	; 208
+ 2b4:	0e 94 8e 01 	call	0x31c	; 0x31c <TWI_Write>
+	// Request address for Second
+	TWI_Write(RTC_SECOND_REG);
+ 2b8:	80 e0       	ldi	r24, 0x00	; 0
+ 2ba:	0e 94 8e 01 	call	0x31c	; 0x31c <TWI_Write>
+	
+	//TWI_Stop();
+	
+	// Begin reading
+	
+	TWI_Start();
+ 2be:	0e 94 7c 01 	call	0x2f8	; 0x2f8 <TWI_Start>
+	
+	// Send Read request
+	TWI_Write(RTC_READ_MODE);
+ 2c2:	81 ed       	ldi	r24, 0xD1	; 209
+ 2c4:	0e 94 8e 01 	call	0x31c	; 0x31c <TWI_Write>
+	// Read from Second address without ACK
+	uint8_t value = TWI_NoAckRead();
+ 2c8:	0e 94 97 01 	call	0x32e	; 0x32e <TWI_NoAckRead>
+	*rtcSecond = BCDtoDecimal(value);
+ 2cc:	0e 94 3c 01 	call	0x278	; 0x278 <BCDtoDecimal>
+ 2d0:	f8 01       	movw	r30, r16
+ 2d2:	80 83       	st	Z, r24
+	
+	TWI_Stop();
+ 2d4:	0e 94 85 01 	call	0x30a	; 0x30a <TWI_Stop>
+}
+ 2d8:	1f 91       	pop	r17
+ 2da:	0f 91       	pop	r16
+ 2dc:	08 95       	ret
+
+000002de <TWI_Init>:
+#include <avr/io.h>
+#include "TWI.h"
+
+void TWI_Init(void) {
+	// TWI Prescaler = 1
+	TWSR &= ~((1 << TWPS1) | (1 << TWPS0));
+ 2de:	e1 e2       	ldi	r30, 0x21	; 33
+ 2e0:	f0 e0       	ldi	r31, 0x00	; 0
+ 2e2:	80 81       	ld	r24, Z
+ 2e4:	8c 7f       	andi	r24, 0xFC	; 252
+ 2e6:	80 83       	st	Z, r24
+	// TWI Bit Rate Register = 36
+	// SCL freq = 8MHz / (16 + 2 * 32 * 1) = 100kHz;
+	TWBR = 32;
+ 2e8:	80 e2       	ldi	r24, 0x20	; 32
+ 2ea:	80 b9       	out	0x00, r24	; 0
+	// Enable TWI
+	TWCR |= 1 << TWEN;
+ 2ec:	e6 e5       	ldi	r30, 0x56	; 86
+ 2ee:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f0:	80 81       	ld	r24, Z
+ 2f2:	84 60       	ori	r24, 0x04	; 4
+ 2f4:	80 83       	st	Z, r24
+}
+ 2f6:	08 95       	ret
+
+000002f8 <TWI_Start>:
+
+void TWI_Start(void) {
+	// Clear TWI Interrupt Flag
+	// Make master, generate START condition
+	// Activate TWI, take control over SCL and SDA
+	TWCR |= (1 << TWSTA) | (1 << TWEN) | (1 << TWINT);	
+ 2f8:	e6 e5       	ldi	r30, 0x56	; 86
+ 2fa:	f0 e0       	ldi	r31, 0x00	; 0
+ 2fc:	80 81       	ld	r24, Z
+ 2fe:	84 6a       	ori	r24, 0xA4	; 164
+ 300:	80 83       	st	Z, r24
+	
+	// Wait until TWINT is successfully cleared
+	while (!(TWCR & (1 << TWINT)));
+ 302:	80 81       	ld	r24, Z
+ 304:	88 23       	and	r24, r24
+ 306:	ec f7       	brge	.-6      	; 0x302 <TWI_Start+0xa>
+}
+ 308:	08 95       	ret
+
+0000030a <TWI_Stop>:
+
+void TWI_Stop(void) {
+	// Clear TWI Interrupt Flag
+	// Generate STOP condition
+	// Activate TWI, take control over SCL and SDA
+	TWCR |= (1 << TWSTO) | (1 << TWINT) | (1 << TWEN);
+ 30a:	e6 e5       	ldi	r30, 0x56	; 86
+ 30c:	f0 e0       	ldi	r31, 0x00	; 0
+ 30e:	80 81       	ld	r24, Z
+ 310:	84 69       	ori	r24, 0x94	; 148
+ 312:	80 83       	st	Z, r24
+	
+	while (TWCR & (1 << TWSTO));
+ 314:	80 81       	ld	r24, Z
+ 316:	84 fd       	sbrc	r24, 4
+ 318:	fd cf       	rjmp	.-6      	; 0x314 <TWI_Stop+0xa>
+}
+ 31a:	08 95       	ret
+
+0000031c <TWI_Write>:
+
+void TWI_Write(uint8_t data8) {
+	// TWI Data Register
+	TWDR = data8;
+ 31c:	83 b9       	out	0x03, r24	; 3
+	// Clear TWI Interrupt Flag
+	// Activate TWI, take control over SCL and SDA
+	TWCR = (1 << TWEN) | (1 << TWINT);
+ 31e:	84 e8       	ldi	r24, 0x84	; 132
+ 320:	86 bf       	out	0x36, r24	; 54
+	
+	// Wait until TWINT is successfully cleared
+	while (!(TWCR & (1 << TWINT)));
+ 322:	e6 e5       	ldi	r30, 0x56	; 86
+ 324:	f0 e0       	ldi	r31, 0x00	; 0
+ 326:	80 81       	ld	r24, Z
+ 328:	88 23       	and	r24, r24
+ 32a:	ec f7       	brge	.-6      	; 0x326 <TWI_Write+0xa>
+}
+ 32c:	08 95       	ret
+
+0000032e <TWI_NoAckRead>:
+}
+
+uint8_t TWI_NoAckRead(void) {
+	// Clear TWI Interrupt Flag
+	// Activate TWI, take control over SCL and SDA
+	TWCR = (1 << TWEN) | (1 << TWINT);
+ 32e:	84 e8       	ldi	r24, 0x84	; 132
+ 330:	86 bf       	out	0x36, r24	; 54
+	
+	// Wait until TWINT is successfully cleared
+	while (!(TWCR & (1 << TWINT)));
+ 332:	e6 e5       	ldi	r30, 0x56	; 86
+ 334:	f0 e0       	ldi	r31, 0x00	; 0
+ 336:	80 81       	ld	r24, Z
+ 338:	88 23       	and	r24, r24
+ 33a:	ec f7       	brge	.-6      	; 0x336 <TWI_NoAckRead+0x8>
+	
+	return TWDR;
+ 33c:	83 b1       	in	r24, 0x03	; 3
+}
+ 33e:	08 95       	ret
+
+00000340 <__udivmodqi4>:
+ 340:	99 1b       	sub	r25, r25
+ 342:	79 e0       	ldi	r23, 0x09	; 9
+ 344:	04 c0       	rjmp	.+8      	; 0x34e <__udivmodqi4_ep>
+
+00000346 <__udivmodqi4_loop>:
+ 346:	99 1f       	adc	r25, r25
+ 348:	96 17       	cp	r25, r22
+ 34a:	08 f0       	brcs	.+2      	; 0x34e <__udivmodqi4_ep>
+ 34c:	96 1b       	sub	r25, r22
+
+0000034e <__udivmodqi4_ep>:
+ 34e:	88 1f       	adc	r24, r24
+ 350:	7a 95       	dec	r23
+ 352:	c9 f7       	brne	.-14     	; 0x346 <__udivmodqi4_loop>
+ 354:	80 95       	com	r24
+ 356:	08 95       	ret
+
+00000358 <_exit>:
+ 358:	f8 94       	cli
+
+0000035a <__stop_program>:
+ 35a:	ff cf       	rjmp	.-2      	; 0x35a <__stop_program>

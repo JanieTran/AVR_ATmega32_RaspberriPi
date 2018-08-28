@@ -7,155 +7,151 @@
  * Date: 20th August, 2018
  */ 
 
+#ifndef F_CPU
+#define F_CPU 8000000ul
+#endif
+
 #include <avr/io.h>
+#include <util/delay.h>
+#include "RTC.h"
+#include "TWI.h"
+#include "Dual7Segment.h"
 
 //=====================================================
-// CONSTANTS DECLARATION
+// Prototypes
 //=====================================================
 
-#define RTC_WRITE_MODE 0xD0ul
-#define RTC_READ_MODE 0xD1ul
-#define RTC_SECOND_REG 0x00ul
+void GPIO_Config(void);
 
-//=====================================================
-// FUNCTIONS DECLARATION
-//=====================================================
+void ClearDisplay(void);
 
-// TWI functions
-void InitialiseTWI(void);
-void StartTWI(void);
-void StopTWI(void);
-void WriteTWI(uint8_t data8);
-uint8_t AckReadTWI(void);
-uint8_t NoAckReadTWI(void);
-uint8_t TWIGetStatus(void);
+void INT1_Init(void);
 
-// RTC functions
-void RTC_ResetSec(void);
-uint8_t RTC_ReadSec(void);
+void SevenSegDisplay(uint8_t value);
+void WriteDigit1(uint8_t second);
+void WriteDigit2(uint8_t second);
 
 //=====================================================
 // MAIN FUNCTION
 //=====================================================
 
 uint8_t second;
+uint8_t rtcSecond;
+uint8_t counting;
+uint8_t finish;
 
 int main(void)
 {
-    
+	// Configuration
+	GPIO_Config();
+	ClearDisplay();
+	TWI_Init();
+	RTC_ResetSec();
+	
+	// Variables initialisation
+	counting = 0;
+	second = 0;
+	rtcSecond = 0;
+	finish = 0;
+	
     while (1) {
+		// Counting mode
+		if (counting) {
+			RTC_ReadSec(&rtcSecond);
+			second = 59 - rtcSecond;	
+			
+			// Exit counting mode and toggle finish flag
+			if (second == 0) {
+				counting = 0;
+				finish = 1;
+			}
+		}
 		
+		// Button is pushed, reset clock and
+		// begin counting down
+		if (PIND & 1 << PIND3) {
+			_delay_ms(300);
+			RTC_ResetSec();
+			counting = 1;
+		}
+		
+		// Display value of second
+		WriteDigit1(second);
+		WriteDigit2(second);
+		
+		// Toggle LED on when finish
+		if (finish) {
+			PORTC |= 1 << PORTC3;
+			_delay_ms(2000);
+			PORTC &= ~(1 << PORTC3);
+			finish = 0;
+		}
     }
 }
 
 //=====================================================
-// FUNCTIONS BODY
+// GPIO Config
 //=====================================================
 
-// TWI functions
-
-void InitialiseTWI(void) {
-	// TWI Prescaler = 1
-	TWSR |= ~((1 << TWPS1) | (1 << TWPS0));
-	// TWI Bit Rate Register = 12
-	// SCL freq = 12MHz / (16 + 2 * 12 * 1) = 300kHz;
-	TWBR = 12;
+void GPIO_Config(void) {
+	// Port A (excluding PA6) as output for 7-segment digit 1
+	DDRA = 0b10111111;
+	// Port B (excluding PB7) as output for 7-segment digit 2
+	DDRB = 0b01111111;
+	// PD3 as input from push button
+	DDRD &= ~(1 << DDD3);
+	// PC3 as output to LED
+	DDRC |= 1 << DDC3;
 }
 
-void StartTWI(void) {
-	// Clear TWI Interrupt Flag
-	TWCR |= 1 << TWINT;
-	// Make master, generate START condition
-	TWCR |= 1 << TWSTA;
-	// Activate TWI, take control over SCL and SDA
-	TWCR |= 1 << TWEN;
-	// Wait until TWINT is successfully cleared
-	while (TWCR & 1 << TWINT);
+//=====================================================
+// 7-Segment display
+//=====================================================
+
+void ClearDisplay(void) {
+	PORTA = 0xFFul;
+	PORTB = 0x7Ful;
 }
 
-void StopTWI(void) {
-	// Clear TWI Interrupt Flag
-	TWCR |= 1 << TWINT;
-	// Generate STOP condition
-	TWCR |= 1 << TWSTO;
-	// Activate TWI, take control over SCL and SDA
-	TWCR |= 1 << TWEN;
+void WriteDigit1(uint8_t second) {
+	uint8_t tenth = second / 10;
+	uint8_t digit;
+	
+	switch (tenth) {
+		default: digit = 0xFF;	  break;
+		case 0:  digit = B_ZERO;  break;
+		case 1:  digit = B_ONE;   break;
+		case 2:  digit = B_TWO;   break;
+		case 3:  digit = B_THREE; break;
+		case 4:  digit = B_FOUR;  break;
+		case 5:  digit = B_FIVE;  break;
+		case 6:  digit = B_SIX;   break;
+		case 7:  digit = B_SEVEN; break;
+		case 8:  digit = B_EIGHT; break;
+		case 9:  digit = B_NINE;  break;
+	}
+	
+	PORTB = digit;
 }
 
-void WriteTWI(uint8_t data8) {
-	// TWI Data Register
-	TWDR = data8;
-	// Clear TWI Interrupt Flag
-	TWCR |= 1 << TWINT;
-	// Activate TWI, take control over SCL and SDA
-	TWCR |= 1 << TWEN;
-	// Wait until TWINT is successfully cleared
-	while (TWCR & 1 << TWINT);
+void WriteDigit2(uint8_t second) {
+	uint8_t unit = second % 10;
+	uint8_t digit;
+	
+	switch (unit) {
+		default: digit = 0xFF;	  break;
+		case 0:  digit = A_ZERO;  break;
+		case 1:  digit = A_ONE;  break;
+		case 2:  digit = A_TWO;   break;
+		case 3:  digit = A_THREE; break;
+		case 4:  digit = A_FOUR;  break;
+		case 5:  digit = A_FIVE;  break;
+		case 6:  digit = A_SIX;   break;
+		case 7:  digit = A_SEVEN; break;
+		case 8:  digit = A_EIGHT; break;
+		case 9:  digit = A_NINE;  break;
+	}
+	
+	PORTA = digit;
 }
 
-uint8_t AckReadTWI(void) {
-	// Clear TWI Interrupt Flag
-	TWCR |= 1 << TWINT;
-	// Activate TWI, take control over SCL and SDA
-	TWCR |= 1 << TWEN;
-	// TWI Enable Acknowledgement
-	TWCR |= 1 << TWEA;
-	// Wait until TWINT is successfully cleared
-	while (TWCR & 1 << TWINT);
-	return TWDR;
-}
-
-uint8_t NoAckReadTWI(void) {
-	// Clear TWI Interrupt Flag
-	TWCR |= 1 << TWINT;
-	// Activate TWI, take control over SCL and SDA
-	TWCR |= 1 << TWEN;
-	// Wait until TWINT is successfully cleared
-	while (TWCR & 1 << TWINT);
-	return TWDR;
-}
-
-uint8_t TWIGetStatus(void) {
-	uint8_t statusBits;
-	// Read TWI Status Bit - TWSR[7:3]
-	statusBits = TWSR & 0xF8;
-	return statusBits;
-}
-
-// RTC functions
-
-uint8_t RTC_ReadSec(void) {
-	StartTWI();
-	
-	// Send Write request
-	WriteTWI(RTC_WRITE_MODE);
-	// Request address for Second
-	WriteTWI(RTC_SECOND_REG);
-	
-	StopTWI();
-	
-	// Begin reading
-	
-	StartTWI();
-	
-	// Send Read request
-	WriteTWI(RTC_READ_MODE);
-	// Read from Second address with ACK
-	second = AckReadTWI();
-	
-	StopTWI();
-}
-
-void RTC_ResetSec(void) {
-	StartTWI();
-	
-	// Send Write request
-	WriteTWI(RTC_WRITE_MODE);
-	// Request address for Second
-	WriteTWI(RTC_SECOND_REG);
-	
-	// Reset Second value to 0
-	WriteTWI(0);
-	
-	StopTWI();
-}

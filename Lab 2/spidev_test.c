@@ -8,6 +8,10 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
+//================================================================
+// VARIABLES AND FUNCTIONS PROTOTYPES
+//================================================================
+
 int fd;
 uint8_t data[] = {0x8a, 0x3f};
 uint8_t mode;
@@ -17,7 +21,11 @@ uint32_t speed = 500000;
 uint16_t delay;
 
 void SPI_Init(void);
-void transfer(int fd, uint8_t txDat);
+void SPI_Transfer(int fd, uint8_t txDat);
+
+//================================================================
+// MAIN FUNCTION
+//================================================================
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +36,7 @@ int main(int argc, char *argv[])
 	SPI_Init();
 
 	while (1) {
-		transfer(fd, data[index]);
+		SPI_Transfer(fd, data[index]);
 		usleep(1000000);
 		index = !index;
 	}
@@ -36,11 +44,14 @@ int main(int argc, char *argv[])
 	close(fd);
 }
 
+//================================================================
+// FUNCTION BODY
+//================================================================
+
 void SPI_Init(void) {
 	int ret;
-	/*
-	 * spi mode
-	 */
+	
+	// SPI Mode
 	ret = ioctl(fd, SPI_IOC_WR_MODE, &mode);
 	if (ret == -1)
 		printf("can't set spi mode");
@@ -49,9 +60,7 @@ void SPI_Init(void) {
 	if (ret == -1)
 		printf("can't get spi mode");
 
-	/*
-	 * bits per word
-	 */
+	// Bits per word
 	ret = ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, &bits);
 	if (ret == -1)
 		printf("can't set bits per word");
@@ -60,9 +69,7 @@ void SPI_Init(void) {
 	if (ret == -1)
 		printf("can't get bits per word");
 
-	/*
-	 * max speed hz
-	 */
+	// Max speed
 	ret = ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, &speed);
 	if (ret == -1)
 		printf("can't set max speed hz");
@@ -77,7 +84,7 @@ void SPI_Init(void) {
 }
 
 
-void transfer(int fd, uint8_t txDat)
+void SPI_Transfer(int fd, uint8_t txDat)
 {
 	uint8_t tx[] = {txDat};
 	uint8_t rx[sizeof(tx)] = {0, };

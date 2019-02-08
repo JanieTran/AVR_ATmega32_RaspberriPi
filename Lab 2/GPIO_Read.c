@@ -6,7 +6,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int GPIO_Init(int pin);
+//================================================================
+// VARIABLES AND FUNCTIONS PROTOTYPES
+//================================================================
+
+void GPIO_Init(int pin);
 int GPIO_Read(int pin);
 void GPIO_Unexport(int pin);
 
@@ -15,6 +19,10 @@ int gpio = 21;
 int dutyCycle = 80;
 int delayTime = 500000;
 int result;
+
+//================================================================
+// MAIN FUNCTION
+//================================================================
 
 int main(int argc, char** argv) {
     GPIO_Init(gpio);
@@ -32,17 +40,18 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-int GPIO_Init(int pin) {
+//================================================================
+// FUNCTION BODY
+//================================================================
+
+void GPIO_Init(int pin) {
     char buf[100];
 
-    printf("========INIT=========\n");
-    printf("Export\n");
     // Export GPIO pin
     fd = fopen("/sys/class/gpio/export", "w");
     fprintf(fd, "%d", pin);
     fclose(fd);
 
-    printf("Direction\n");
     // Set direction
     sprintf(buf, "/sys/class/gpio/gpio%d/direction", pin);
     fd = fopen(buf, "w");
@@ -54,8 +63,6 @@ int GPIO_Read(int pin) {
     char buf[100];
     char value[1];
 
-    printf("========READ=========\n");
-    printf("Open\n");
     // Open value file of GPIO
     sprintf(buf, "/sys/class/gpio/gpio%d/value", pin);
     fd = fopen(buf, "r");
@@ -63,7 +70,6 @@ int GPIO_Read(int pin) {
         printf("Fail to open GPIO for reading\n");
     }
 
-    printf("Reading\n");
     fscanf(fd, "%s", value);
 
     fclose(fd);
@@ -73,7 +79,6 @@ int GPIO_Read(int pin) {
 
 void GPIO_Unexport(int pin) {
     // Unexport GPIO pin
-    printf("========UNEXPORT=========\n");
     fd = fopen("/sys/class/gpio/unexport", "w");
     fprintf(fd, "%d", pin);
     fclose(fd);

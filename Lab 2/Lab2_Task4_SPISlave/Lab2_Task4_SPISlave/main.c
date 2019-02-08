@@ -10,25 +10,33 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+//================================================================
+// FUNCTION PROTOTYPES
+//================================================================
+
 void SPI_SlaveInit(void);
 uint8_t SPI_SlaveReceive(void);
 uint8_t result;
 uint8_t tx;
 
+//================================================================
+// MAIN FUNCTION
+//================================================================
+
 int main(void)
 {
-	DDRA |= 1 << DDA0;
     SPI_SlaveInit();
 	tx = 0;
 	SPDR = 0x3f;
 	
     while (1) {
 		tx = SPI_SlaveReceive();
-		if (tx == 0x8a) {
-			PORTA |= 1 << PORTA0;
-		}
     }
 }
+
+//================================================================
+// FUNCTION BODY
+//================================================================
 
 void SPI_SlaveInit() {
 	// Set PB6 - MISO output
